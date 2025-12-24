@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Colinha</title>
+    <style>
+        /* Estilos Gerais - Mais robustos com responsividade */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e9ecef;
+            margin: 0;
+            padding: 20px;
+            color: #343a40;
+            line-height: 1.6;
+        }
+        h1 {
+            text-align: center;
+            color: #007bff;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        @media (max-width: 768px) {
+            body { padding: 10px; }
+            h1 { font-size: 2em; }
+        }
+
+        /* Container das Abas */
+        .tabs {
+            max-width: 1200px;
+            margin: 0 auto;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            background-color: #ffffff;
+        }
+
+        /* Links das Abas - Melhorados com buttons para acessibilidade */
+        .tab-links {
+            display: flex;
+            flex-wrap: wrap;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .tab-links li {
+            flex: 1 1 auto;
+            min-width: 150px;
+        }
+        .tab-links button {
+            width: 100%;
+            padding: 15px;
+            cursor: pointer;
+            text-align: center;
+            font-weight: bold;
+            border: none;
+            background-color: transparent;
+            transition: background 0.3s, color 0.3s;
+            border-right: 1px solid #dee2e6;
+        }
+        .tab-links button:last-child {
+            border-right: none;
+        }
+        .tab-links button:hover {
+            background-color: #e9ecef;
+        }
+        .tab-links button.active {
+            background-color: white;
+            border-bottom: 3px solid #007bff;
+            color: #007bff;
+        }
+
+        /* Conteúdo das Abas */
+        .tab-content {
+            display: none;
+            padding: 25px;
+            background-color: white;
+            animation: fadeIn 0.5s ease-in;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        @media (max-width: 768px) {
+            .tab-content { padding: 15px; }
+        }
+
+        /* Cores Temáticas por Aba - Mantidas e aprimoradas */
+        .tab-content#tab1 { background-color: #f0fff4; border-top: 3px solid #28a745; }
+        .tab-links button[for="tab1"].active { color: #28a745; border-bottom-color: #28a745; }
+        .tab-content#tab2 { background-color: #f0f8ff; border-top: 3px solid #007bff; }
+        .tab-links button[for="tab2"].active { color: #007bff; border-bottom-color: #007bff; }
+        .tab-content#tab3 { background-color: #fffaf0; border-top: 3px solid #fd7e14; }
+        .tab-links button[for="tab3"].active { color: #fd7e14; border-bottom-color: #fd7e14; }
+        .tab-content#tab4 { background-color: #f8f0ff; border-top: 3px solid #6f42c1; }
+        .tab-links button[for="tab4"].active { color: #6f42c1; border-bottom-color: #6f42c1; }
+
+        /* Galeria de PDFs - Mais robusta com grid */
+        .pdf-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .pdf-card {
+            background-color: #ffffff;
+            border: 1px solid #dee2e6;
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            opacity: 0;
+            animation: fadeInCard 1s forwards;
+            position: relative; /* Para fallback */
+        }
+        .pdf-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+        .pdf-card h3 {
+            margin: 0 0 15px;
+            text-align: center;
+            color: #495057;
+            font-size: 1.2em;
+        }
+        .pdf-embed {
+            width: 100%;
+            height: 450px;
+            border: none;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        @media (max-width: 768px) {
+            .pdf-embed { height: 300px; }
+        }
+
+        /* Fallback para PDFs que não carregam no iframe */
+        .pdf-fallback {
+            text-align: center;
+            color: #dc3545;
+            font-style: italic;
+        }
+
+        /* Animações Keyframes */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes fadeInCard {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <h1>Meus Estudos OSI</h1>
+    
+    <div class="tabs">
+        <!-- Links das Abas -  -->
+        <ul class="tab-links">
+            <li><button for="tab1" class="active">Camada 1: Física</button></li>
+            <li><button for="tab2">Camada 2: Enlace de Dados</button></li>
+            <li><button for="tab3">Camada 3: Rede</button></li>
+            <li><button for="tab4">Camada 4: Transporte</button></li>
+        </ul>
+        
+        <!-- Conteúdo das Abas -->
+        <div id="tab1" class="tab-content active">
+            <h2>Camada 1: Física</h2>
+            <div class="pdf-gallery">
+                
+                <div class="pdf-card">
+                    <h3>Simulação de Camada 1: Cliente Cooperativo.</h3>
+                    <div class="pdf-embed">
+                        <object data="src/Simulação de Atendimento - cliente cooperativo.pdf" type="application/pdf" width="100%" height="100%">
+                            <iframe src="src/Simulação de Atendimento - cliente cooperativo.pdf" width="100%" height="100%"></iframe>
+                            <p class="pdf-fallback">Seu navegador não suporta PDFs. <a href="src/Simulação de Atendimento - cliente cooperativo.pdf">Baixe o PDF aqui</a>.</p>
+                        </object>
+                    </div>
+                </div>
+                
+                <div class="pdf-card">
+                    <h3>Simulação de Camada 1: Cliente Irritado.</h3>
+                    <div class="pdf-embed">
+                        <object data="src/Simulação de Atendimento - cliente irritado.pdf" type="application/pdf" width="100%" height="100%">
+                            <iframe src="src/Simulação de Atendimento - cliente irritado.pdf" width="100%" height="100%"></iframe>
+                            <p class="pdf-fallback">Seu navegador não suporta PDFs. <a href="src/Simulação de Atendimento - cliente irritado.pdf">Baixe o PDF aqui</a>.</p>
+                        </object>
+                    </div>
+                </div>
+                <!-- Adicione mais cards aqui... -->
+            </div>
+        </div>
+        
+        <div id="tab2" class="tab-content">
+            <h2>Camada 2: Enlace de Dados</h2>
+            <div class="pdf-gallery">
+                
+                <div class="pdf-card">
+                    <h3>Simulação de Camada 2: Cliente Cooperativo</h3>
+                    <div class="pdf-embed">
+                        <object data="src/Simulação de Atendimento - Camada 2 Cliente Receptivo.pdf" type="application/pdf" width="100%" height="100%">
+                            <iframe src="src/Simulação de Atendimento - Camada 2 Cliente Receptivo.pdf" width="100%" height="100%"></iframe>
+                            <p class="pdf-fallback">Seu navegador não suporta PDFs. <a href="src/Simulação de Atendimento - Camada 2 Cliente Receptivo.pdf">Baixe o PDF aqui</a>.</p>
+                        </object>
+                    </div>
+                </div>
+
+                <div class="pdf-card">
+                    <h3>Simulação de Camada 2: Cliente Cooperativo</h3>
+                    <div class="pdf-embed">
+                        <object data="src/Simulação de Atendimento - Camada 2 Cliente Irritado..pdf" type="application/pdf" width="100%" height="100%">
+                            <iframe src="src/Simulação de Atendimento - Camada 2 Cliente Irritado..pdf" width="100%" height="100%"></iframe>
+                            <p class="pdf-fallback">Seu navegador não suporta PDFs. <a href="src/Simulação de Atendimento - Camada 2 Cliente Irritado..pdf">Baixe o PDF aqui</a>.</p>
+                        </object>
+                    </div>
+                </div>
+                <!-- Adicione mais cards aqui... -->
+            </div>
+        </div>
+        
+        <div id="tab3" class="tab-content">
+            <h2>Camada 3: Rede</h2>
+            <div class="pdf-gallery">
+                
+                <div class="pdf-card">
+                    <h3>Simulação de Atendimento Camada 3</h3>
+                    <div class="pdf-embed">
+                        <object data="src/Simulação de Atendimento Camada 3 - Cliente Cooperativo..pdf" type="application/pdf" width="100%" height="100%">
+                            <iframe src="src/Simulação de Atendimento Camada 3 - Cliente Cooperativo..pdf" width="100%" height="100%"></iframe>
+                            <p class="pdf-fallback">Seu navegador não suporta PDFs. <a href="src/Simulação de Atendimento Camada 3 - Cliente Cooperativo..pdf">Baixe o PDF aqui</a>.</p>
+                        </object>
+                    </div>
+                </div>
+
+                <div class="pdf-card">
+                    <h3>Simulação de Atendimento Camada 3</h3>
+                    <div class="pdf-embed">
+                        <object data="src/Simulação de Atendimento Camada 3 - Cliente Irritado..pdf" type="application/pdf" width="100%" height="100%">
+                            <iframe src="src/Simulação de Atendimento Camada 3 - Cliente Irritado..pdf" width="100%" height="100%"></iframe>
+                            <p class="pdf-fallback">Seu navegador não suporta PDFs. <a href="src/Simulação de Atendimento Camada 3 - Cliente Irritado..pdf">Baixe o PDF aqui</a>.</p>
+                        </object>
+                    </div>
+                </div>
+                <!-- Adicione mais cards aqui... -->
+            </div>
+        </div>
+        
+        <div id="tab4" class="tab-content">
+            <h2>Camada 4: Transporte</h2>
+            <div class="pdf-gallery">
+                
+                <div class="pdf-card">
+                    <h3>Simulação de Atendimento de Camada 4</h3>
+                    <div class="pdf-embed">
+                        <object data="src/Simulação de Atendimento de Camada 4 - Cliente Cooperativo.pdf" type="application/pdf" width="100%" height="100%">
+                            <iframe src="src/Simulação de Atendimento de Camada 4 - Cliente Cooperativo.pdf" width="100%" height="100%"></iframe>
+                            <p class="pdf-fallback">Seu navegador não suporta PDFs. <a href="src/Simulação de Atendimento de Camada 4 - Cliente Cooperativo.pdf">Baixe o PDF aqui</a>.</p>
+                        </object>
+                    </div>
+                </div>
+
+                <div class="pdf-card">
+                    <h3>Simulação de Atendimento de Camada 4</h3>
+                    <div class="pdf-embed">
+                        <object data="src/Simulação de Atendimento de Camada 4 - Cliente Cooperativo.pdf" type="application/pdf" width="100%" height="100%">
+                            <iframe src="src/Simulação de Atendimento de Camada 4 - Cliente Cooperativo.pdf" width="100%" height="100%"></iframe>
+                            <p class="pdf-fallback">Seu navegador não suporta PDFs. <a href="src/Simulação de Atendimento de Camada 4 - Cliente Cooperativo.pdf">Baixe o PDF aqui</a>.</p>
+                        </object>
+                    </div>
+                </div>
+                <!-- Adicione mais cards aqui... -->
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript para Abas Robustas (sem dependências externas) -->
+    <script>
+        const tabs = document.querySelectorAll('.tab-links button');
+        const contents = document.querySelectorAll('.tab-content');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active de todos
+                tabs.forEach(t => t.classList.remove('active'));
+                contents.forEach(c => c.classList.remove('active'));
+
+                // Adiciona active no clicado
+                tab.classList.add('active');
+                document.getElementById(tab.getAttribute('for')).classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
