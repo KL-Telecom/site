@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+    <script src="js/pdf.mjs"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#ffffff">  
@@ -250,7 +251,7 @@
                 <div class="pdf-card">
                 <button class="maximize-btn">Maximizar PDF</button>
                     <h3>Simulação de Camada 1: Cliente Cooperativo.</h3>
-                    <div class="pdf-embed">
+                    <div class="pdf-embed" id="pdf-container1">
                         <object data="src/Simulação de Atendimento - cliente cooperativo.pdf" type="application/pdf" width="100%" height="100%">
                             <iframe src="src/Simulação de Atendimento - cliente cooperativo.pdf" width="100%" height="100%" sandbox="allow-scripts allow-same-origin"></iframe>
                             <p class="pdf-fallback">Seu navegador não suporta PDFs. <a href="src/Simulação de Atendimento - cliente cooperativo.pdf">Baixe o PDF aqui</a>.</p>
@@ -261,7 +262,7 @@
                 <div class="pdf-card">
                 <button class="maximize-btn">Maximizar PDF</button>
                     <h3>Simulação de Camada 1: Cliente Irritado.</h3>
-                    <div class="pdf-embed">
+                    <div class="pdf-embed" id="pdf-container2">
                         <object data="src/Simulação de Atendimento - cliente irritado.pdf" type="application/pdf" width="100%" height="100%">
                             <iframe src="src/Simulação de Atendimento - cliente irritado.pdf" width="100%" height="100%" sandbox="allow-scripts allow-same-origin"></iframe>
                             <p class="pdf-fallback">Seu navegador não suporta PDFs. <a href="src/Simulação de Atendimento - cliente irritado.pdf">Baixe o PDF aqui</a>.</p>
@@ -279,7 +280,7 @@
                 <div class="pdf-card">
                 <button class="maximize-btn">Maximizar PDF</button>
                     <h3>Simulação de Camada 2: Cliente Cooperativo</h3>
-                    <div class="pdf-embed">
+                    <div class="pdf-embed" id="pdf-container3">
                         <object data="src/Simulação de Atendimento - Camada 2 Cliente Receptivo.pdf" type="application/pdf" width="100%" height="100%">
                             <iframe src="src/Simulação de Atendimento - Camada 2 Cliente Receptivo.pdf" width="100%" height="100%" sandbox="allow-scripts allow-same-origin"></iframe>
                             <p class="pdf-fallback">Seu navegador não suporta PDFs. <a href="src/Simulação de Atendimento - Camada 2 Cliente Receptivo.pdf">Baixe o PDF aqui</a>.</p>
@@ -290,7 +291,7 @@
                 <div class="pdf-card">
                 <button class="maximize-btn">Maximizar PDF</button>
                     <h3>Simulação de Camada 2: Cliente Cooperativo</h3>
-                    <div class="pdf-embed">
+                    <div class="pdf-embed" id="pdf-container4">
                         <object data="src/Simulação de Atendimento - Camada 2 Cliente Irritado..pdf" type="application/pdf" width="100%" height="100%">
                             <iframe src="src/Simulação de Atendimento - Camada 2 Cliente Irritado..pdf" width="100%" height="100%" sandbox="allow-scripts allow-same-origin"></iframe>
                             <p class="pdf-fallback">Seu navegador não suporta PDFs. <a href="src/Simulação de Atendimento - Camada 2 Cliente Irritado..pdf">Baixe o PDF aqui</a>.</p>
@@ -308,7 +309,7 @@
                 <div class="pdf-card">
                 <button class="maximize-btn">Maximizar PDF</button>
                     <h3>Simulação de Atendimento Camada 3</h3>
-                    <div class="pdf-embed">
+                    <div class="pdf-embed" id="pdf-container5">
                         <object data="src/Simulação de Atendimento Camada 3 - Cliente Cooperativo..pdf" type="application/pdf" width="100%" height="100%">
                             <iframe src="src/Simulação de Atendimento Camada 3 - Cliente Cooperativo..pdf" width="100%" height="100%" sandbox="allow-scripts allow-same-origin"></iframe>
                             <p class="pdf-fallback">Seu navegador não suporta PDFs. <a href="src/Simulação de Atendimento Camada 3 - Cliente Cooperativo..pdf">Baixe o PDF aqui</a>.</p>
@@ -319,7 +320,7 @@
                 <div class="pdf-card">
                 <button class="maximize-btn">Maximizar PDF</button>
                     <h3>Simulação de Atendimento Camada 3</h3>
-                    <div class="pdf-embed">
+                    <div class="pdf-embed" pdf="container6">
                         <object data="src/Simulação de Atendimento Camada 3 - Cliente Irritado..pdf" type="application/pdf" width="100%" height="100%">
                             <iframe src="src/Simulação de Atendimento Camada 3 - Cliente Irritado..pdf" width="100%" height="100%" sandbox="allow-scripts allow-same-origin"></iframe>
                             <p class="pdf-fallback">Seu navegador não suporta PDFs. <a href="src/Simulação de Atendimento Camada 3 - Cliente Irritado..pdf">Baixe o PDF aqui</a>.</p>
@@ -337,7 +338,7 @@
                 <div class="pdf-card">
                 <button class="maximize-btn">Maximizar PDF</button>
                     <h3>Simulação de Atendimento de Camada 4</h3>
-                    <div class="pdf-embed">
+                    <div class="pdf-embed" id="pdf-container7">
                         <object data="src/Simulação de Atendimento de Camada 4 - Cliente Cooperativo.pdf" type="application/pdf" width="100%" height="100%">
                             <iframe src="src/Simulação de Atendimento de Camada 4 - Cliente Cooperativo.pdf" width="100%" height="100%" sandbox="allow-scripts allow-same-origin"></iframe>
                             <p class="pdf-fallback">Seu navegador não suporta PDFs. <a href="src/Simulação de Atendimento de Camada 4 - Cliente Cooperativo.pdf">Baixe o PDF aqui</a>.</p>
@@ -348,10 +349,10 @@
                 <div class="pdf-card">
                 <button class="maximize-btn">Maximizar PDF</button>
                     <h3>Simulação de Atendimento de Camada 4</h3>
-                    <div class="pdf-embed">
-                        <object data="src/Simulação de Atendimento de Camada 4 - Cliente Cooperativo.pdf" type="application/pdf" width="100%" height="100%">
-                            <iframe src="src/Simulação de Atendimento de Camada 4 - Cliente Cooperativo.pdf" width="100%" height="100%" sandbox="allow-scripts allow-same-origin"></iframe>
-                            <p class="pdf-fallback">Seu navegador não suporta PDFs. <a href="src/Simulação de Atendimento de Camada 4 - Cliente Cooperativo.pdf">Baixe o PDF aqui</a>.</p>
+                    <div class="pdf-embed" id="pdf-container8">
+                        <object data="src/Simulação de Atendimento de Camada 4 - Cliente Irritado..pdf" type="application/pdf" width="100%" height="100%">
+                            <iframe src="src/Simulação de Atendimento de Camada 4 - Cliente Irritado..pdf" width="100%" height="100%" sandbox="allow-scripts allow-same-origin"></iframe>
+                            <p class="pdf-fallback">Seu navegador não suporta PDFs. <a href="src/Simulação de Atendimento de Camada 4 - Cliente Irritado..pdf">Baixe o PDF aqui</a>.</p>
                         </object>
                     </div>
                 </div>
@@ -406,6 +407,94 @@
                         console.error('Card não encontrado.');
                     }
                 });
+            });
+        });
+        
+        PDFJS.getDocument('src/Simulação de Atendimento - cliente cooperativo.pdf').then(pdf => {
+            pdf.getPage(1).then(page => {  // Renderiza página 1 como exemplo
+                const viewport = page.getViewport({ scale: 1.5 });
+                const canvas = document.createElement('canvas');
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+                document.getElementById('pdf-container1').appendChild(canvas);
+                page.render({ canvasContext: canvas.getContext('2d'), viewport: viewport });
+            });
+        });
+
+        PDFJS.getDocument('src/Simulação de Atendimento - cliente irritado.pdf').then(pdf => {
+            pdf.getPage(1).then(page => {  
+                const viewport = page.getViewport({ scale: 1.5 });
+                const canvas = document.createElement('canvas');
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+                document.getElementById('pdf-container2').appendChild(canvas);
+                page.render({ canvasContext: canvas.getContext('2d'), viewport: viewport });
+            });
+        });
+
+        PDFJS.getDocument('src/Simulação de Atendimento - Camada 2 Cliente Receptivo.pdf').then(pdf => {
+            pdf.getPage(1).then(page => {  
+                const viewport = page.getViewport({ scale: 1.5 });
+                const canvas = document.createElement('canvas');
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+                document.getElementById('pdf-container3').appendChild(canvas);
+                page.render({ canvasContext: canvas.getContext('2d'), viewport: viewport });
+            });
+        });
+
+        PDFJS.getDocument('src/Simulação de Atendimento - Camada 2 Cliente Irritado..pdf').then(pdf => {
+            pdf.getPage(1).then(page => {  
+                const viewport = page.getViewport({ scale: 1.5 });
+                const canvas = document.createElement('canvas');
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+                document.getElementById('pdf-container4').appendChild(canvas);
+                page.render({ canvasContext: canvas.getContext('2d'), viewport: viewport });
+            });
+        });
+
+        PDFJS.getDocument('src/Simulação de Atendimento Camada 3 - Cliente Cooperativo..pdf').then(pdf => {
+            pdf.getPage(1).then(page => {  
+                const viewport = page.getViewport({ scale: 1.5 });
+                const canvas = document.createElement('canvas');
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+                document.getElementById('pdf-container5').appendChild(canvas);
+                page.render({ canvasContext: canvas.getContext('2d'), viewport: viewport });
+            });
+        });
+
+        PDFJS.getDocument('src/Simulação de Atendimento Camada 3 - Cliente Irritado..pdf').then(pdf => {
+            pdf.getPage(1).then(page => {  
+                const viewport = page.getViewport({ scale: 1.5 });
+                const canvas = document.createElement('canvas');
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+                document.getElementById('pdf-container6').appendChild(canvas);
+                page.render({ canvasContext: canvas.getContext('2d'), viewport: viewport });
+            });
+        });
+
+        PDFJS.getDocument('src/Simulação de Atendimento de Camada 4 - Cliente Cooperativo.pdf').then(pdf => {
+            pdf.getPage(1).then(page => {  
+                const viewport = page.getViewport({ scale: 1.5 });
+                const canvas = document.createElement('canvas');
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+                document.getElementById('pdf-container7').appendChild(canvas);
+                page.render({ canvasContext: canvas.getContext('2d'), viewport: viewport });
+            });
+        });
+
+        PDFJS.getDocument('src/Simulação de Atendimento de Camada 4 - Cliente Irritado..pdf').then(pdf => {
+            pdf.getPage(1).then(page => {  
+                const viewport = page.getViewport({ scale: 1.5 });
+                const canvas = document.createElement('canvas');
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+                document.getElementById('pdf-container8').appendChild(canvas);
+                page.render({ canvasContext: canvas.getContext('2d'), viewport: viewport });
             });
         });
     </script>
