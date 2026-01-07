@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <script src="js/pdf.mjs"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.338/pdf.min.js"></script> <!-- Use CDN para PDF.js -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#ffffff">  
@@ -11,10 +11,8 @@
     <link rel="apple-touch-icon" href="/src/android-chrome-192x192.png">  
     <title>Colinha</title>
     <link rel="icon" type="image/png" href="src/favicon-32x32.png">
-    <link rel="icon" type="image/x-icon" href="manifest.json">
     <link rel="manifest" href="manifest.json">
     <style>
-        
         body {
             font-family: Arial, sans-serif;
             background-color: #ffffff;
@@ -22,7 +20,7 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            background-attachment: fixed; 
+            /* Removido background-attachment: fixed; para melhor performance no mobile */
             margin: 0;
             padding: 20px;
             color: #5f2626;
@@ -38,6 +36,8 @@
         @media (max-width: 768px) {
             body { padding: 10px; }
             h1 { font-size: 2em; }
+            .tabs { flex-direction: column; } /* Tabs empilhadas em mobile */
+            .tab-links { width: 100%; border-right: none; border-bottom: 1px solid #dee2e6; }
         }
 
         /* Container das Abas */
@@ -51,7 +51,7 @@
             display: flex;
         }
 
-        /* Links das Abas - Melhorados com buttons para acessibilidade */
+        /* Links das Abas */
         .tab-links {
             display: block;
             list-style: none;
@@ -59,8 +59,7 @@
             margin: 0;
             background-color: #f8f9fa;
             border-right: 1px solid #dee2e6;
-            width:200px;
-            float:left;
+            width: 200px;
         }
         .tab-links li {
             width: 100%;
@@ -92,7 +91,7 @@
         .tab-content {
             display: none;
             padding: 25px;
-            background-color: rgb(105, 84, 16);
+            background-color: #ffffff;
             animation: fadeIn 0.5s ease-in;
             flex: 1;
         }
@@ -103,7 +102,7 @@
             .tab-content { padding: 15px; }
         }
 
-        /* Cores Temáticas por Aba - Mantidas e aprimoradas */
+        /* Cores Temáticas por Aba */
         .tab-content#tab1 { background-color: #f0fff4; border-top: 3px solid #28a745; }
         .tab-links button[for="tab1"].active { color: #28a745; border-left-color: #28a745; }
         .tab-content#tab2 { background-color: #f0f8ff; border-top: 3px solid #007bff; }
@@ -113,14 +112,14 @@
         .tab-content#tab4 { background-color: #f8f0ff; border-top: 3px solid #6f42c1; }
         .tab-links button[for="tab4"].active { color: #6f42c1; border-left-color: #6f42c1; }
 
-        /* Galeria de PDFs - Mais robusta com grid */
+        /* Galeria de PDFs */
         .pdf-gallery {
             display: flex;
             flex-direction: column;
             gap: 20px;
         }
         .pdf-card {
-            background-color: #7890fc;
+            background-color: #ffffff;
             border: 1px solid #dee2e6;
             border-radius: 12px;
             padding: 15px;
@@ -128,9 +127,8 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             opacity: 0;
             animation: fadeInCard 1s forwards;
-            position: relative; /* Para fallback */
-            max-width: 800px; /*limita largura para não esticar demais*/
-            margin: 0 auto; /*centraliza*/
+            max-width: 800px;
+            margin: 0 auto;
         }
         .pdf-card:hover {
             transform: translateY(-5px);
@@ -139,7 +137,7 @@
         .pdf-card h3 {
             margin: 0 0 15px;
             text-align: center;
-            color: #000000;
+            color: #333;
             font-size: 1.2em;
         }
         .pdf-embed {
@@ -148,20 +146,7 @@
             border: none;
             border-radius: 8px;
             overflow: auto;
-        }
-        .pdf-fullscreen {
-            position: fixed;
-            top: 5%;
-            left: 5%;
-            width: 90%;
-            height: 90%;
-            z-index: 1000;
-            background: white;
-            border: 2px solid #007bff;
-            overflow: auto;
-        }
-        .pdf-fullscreen .pdf-embed {
-            height: 90% !important;
+            position: relative; /* Para canvas sobrepor */
         }
         @media (max-width: 768px) {
             .pdf-embed { height: 300px; }
@@ -172,33 +157,30 @@
             margin: 0 auto 10px;
             padding: 8px 16px;
             background-color: #007bff;
-            color: rgb(84, 1, 100);
+            color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             transition: background 0.3s;
         }
         .maximize-btn:hover {
-            background-color: #0056b3
+            background-color: #0056b3;
         }
         .pdf-fullscreen {
-            position: fixed !important;
+            position: fixed;
             top: 0;
             left: 0;
-            width: 100vw !important;
-            height: 100vh !important;
-            z-index: 9999 !important; /* Acima de tudo */
+            width: 100vw;
+            height: 100vh;
+            z-index: 9999;
             background: white;
-            overflow: hidden; /* Sem scroll na tela cheia */
+            overflow: auto;
             margin: 0;
             padding: 20px;
             box-sizing: border-box;
         }
         .pdf-fullscreen .pdf-embed {
-            height: calc(100% - 60px) !important; /* Espaço para título e botão */
-        }
-        .pdf-fullscreen h3 {
-            margin-top: 0;
+            height: calc(100vh - 100px);
         }
         .close-btn {
             position: absolute;
@@ -213,14 +195,12 @@
             z-index: 10000;
         }
 
-        /* Fallback para PDFs que não carregam no iframe */
         .pdf-fallback {
             text-align: center;
             color: #dc3545;
             font-style: italic;
         }
 
-        /* Animações Keyframes */
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
@@ -235,7 +215,6 @@
     <h1>Simulação de Atendimentos</h1>
     
     <div class="tabs">
-        <!-- Links das Abas -  -->
         <ul class="tab-links">
             <li><button for="tab1" class="active">Camada 1: Física</button></li>
             <li><button for="tab2">Camada 2: Enlace de Dados</button></li>
@@ -243,125 +222,115 @@
             <li><button for="tab4">Camada 4: Transporte</button></li>
         </ul>
         
-        <!-- Conteúdo das Abas -->
         <div id="tab1" class="tab-content active">
             <h2>Camada 1: Física</h2>
             <div class="pdf-gallery">
-                
                 <div class="pdf-card">
-                <button class="maximize-btn">Maximizar PDF</button>
+                    <button class="maximize-btn">Maximizar PDF</button>
                     <h3>Simulação de Camada 1: Cliente Cooperativo.</h3>
                     <div class="pdf-embed" id="pdf-container1">
                         <object data="src/Simulação de Atendimento - cliente cooperativo.pdf" type="application/pdf" width="100%" height="100%">
-                            <iframe src="src/Simulação de Atendimento - cliente cooperativo.pdf" width="100%" height="100%" sandbox="allow-scripts allow-same-origin"></iframe>
+                            <iframe src="https://docs.google.com/gview?url=your-domain/src/Simulação de Atendimento - cliente cooperativo.pdf&embedded=true" width="100%" height="100%"></iframe> <!-- Fallback Google Viewer -->
                             <p class="pdf-fallback">Seu navegador não suporta PDFs. <a href="src/Simulação de Atendimento - cliente cooperativo.pdf">Baixe o PDF aqui</a>.</p>
                         </object>
                     </div>
                 </div>
                 
                 <div class="pdf-card">
-                <button class="maximize-btn">Maximizar PDF</button>
+                    <button class="maximize-btn">Maximizar PDF</button>
                     <h3>Simulação de Camada 1: Cliente Irritado.</h3>
                     <div class="pdf-embed" id="pdf-container2">
                         <object data="src/Simulação de Atendimento - cliente irritado.pdf" type="application/pdf" width="100%" height="100%">
-                            <iframe src="src/Simulação de Atendimento - cliente irritado.pdf" width="100%" height="100%" sandbox="allow-scripts allow-same-origin"></iframe>
+                            <iframe src="https://docs.google.com/gview?url=your-domain/src/Simulação de Atendimento - cliente irritado.pdf&embedded=true" width="100%" height="100%"></iframe>
                             <p class="pdf-fallback">Seu navegador não suporta PDFs. <a href="src/Simulação de Atendimento - cliente irritado.pdf">Baixe o PDF aqui</a>.</p>
                         </object>
                     </div>
                 </div>
-                <!-- Adicione mais cards aqui... -->
             </div>
         </div>
         
         <div id="tab2" class="tab-content">
             <h2>Camada 2: Enlace de Dados</h2>
             <div class="pdf-gallery">
-                
                 <div class="pdf-card">
-                <button class="maximize-btn">Maximizar PDF</button>
+                    <button class="maximize-btn">Maximizar PDF</button>
                     <h3>Simulação de Camada 2: Cliente Cooperativo</h3>
                     <div class="pdf-embed" id="pdf-container3">
                         <object data="src/Simulação de Atendimento - Camada 2 Cliente Receptivo.pdf" type="application/pdf" width="100%" height="100%">
-                            <iframe src="src/Simulação de Atendimento - Camada 2 Cliente Receptivo.pdf" width="100%" height="100%" sandbox="allow-scripts allow-same-origin"></iframe>
+                            <iframe src="https://docs.google.com/gview?url=your-domain/src/Simulação de Atendimento - Camada 2 Cliente Receptivo.pdf&embedded=true" width="100%" height="100%"></iframe>
                             <p class="pdf-fallback">Seu navegador não suporta PDFs. <a href="src/Simulação de Atendimento - Camada 2 Cliente Receptivo.pdf">Baixe o PDF aqui</a>.</p>
                         </object>
                     </div>
                 </div>
 
                 <div class="pdf-card">
-                <button class="maximize-btn">Maximizar PDF</button>
-                    <h3>Simulação de Camada 2: Cliente Cooperativo</h3>
+                    <button class="maximize-btn">Maximizar PDF</button>
+                    <h3>Simulação de Camada 2: Cliente Irritado</h3>
                     <div class="pdf-embed" id="pdf-container4">
                         <object data="src/Simulação de Atendimento - Camada 2 Cliente Irritado..pdf" type="application/pdf" width="100%" height="100%">
-                            <iframe src="src/Simulação de Atendimento - Camada 2 Cliente Irritado..pdf" width="100%" height="100%" sandbox="allow-scripts allow-same-origin"></iframe>
+                            <iframe src="https://docs.google.com/gview?url=your-domain/src/Simulação de Atendimento - Camada 2 Cliente Irritado..pdf&embedded=true" width="100%" height="100%"></iframe>
                             <p class="pdf-fallback">Seu navegador não suporta PDFs. <a href="src/Simulação de Atendimento - Camada 2 Cliente Irritado..pdf">Baixe o PDF aqui</a>.</p>
                         </object>
                     </div>
                 </div>
-                <!-- Adicione mais cards aqui... -->
             </div>
         </div>
         
         <div id="tab3" class="tab-content">
             <h2>Camada 3: Rede</h2>
             <div class="pdf-gallery">
-                
                 <div class="pdf-card">
-                <button class="maximize-btn">Maximizar PDF</button>
+                    <button class="maximize-btn">Maximizar PDF</button>
                     <h3>Simulação de Atendimento Camada 3</h3>
                     <div class="pdf-embed" id="pdf-container5">
                         <object data="src/Simulação de Atendimento Camada 3 - Cliente Cooperativo..pdf" type="application/pdf" width="100%" height="100%">
-                            <iframe src="src/Simulação de Atendimento Camada 3 - Cliente Cooperativo..pdf" width="100%" height="100%" sandbox="allow-scripts allow-same-origin"></iframe>
+                            <iframe src="https://docs.google.com/gview?url=your-domain/src/Simulação de Atendimento Camada 3 - Cliente Cooperativo..pdf&embedded=true" width="100%" height="100%"></iframe>
                             <p class="pdf-fallback">Seu navegador não suporta PDFs. <a href="src/Simulação de Atendimento Camada 3 - Cliente Cooperativo..pdf">Baixe o PDF aqui</a>.</p>
                         </object>
                     </div>
                 </div>
 
                 <div class="pdf-card">
-                <button class="maximize-btn">Maximizar PDF</button>
+                    <button class="maximize-btn">Maximizar PDF</button>
                     <h3>Simulação de Atendimento Camada 3</h3>
-                    <div class="pdf-embed" pdf="container6">
+                    <div class="pdf-embed" id="pdf-container6"> <!-- Corrigido: adicionado id= -->
                         <object data="src/Simulação de Atendimento Camada 3 - Cliente Irritado..pdf" type="application/pdf" width="100%" height="100%">
-                            <iframe src="src/Simulação de Atendimento Camada 3 - Cliente Irritado..pdf" width="100%" height="100%" sandbox="allow-scripts allow-same-origin"></iframe>
+                            <iframe src="https://docs.google.com/gview?url=your-domain/src/Simulação de Atendimento Camada 3 - Cliente Irritado..pdf&embedded=true" width="100%" height="100%"></iframe>
                             <p class="pdf-fallback">Seu navegador não suporta PDFs. <a href="src/Simulação de Atendimento Camada 3 - Cliente Irritado..pdf">Baixe o PDF aqui</a>.</p>
                         </object>
                     </div>
                 </div>
-                <!-- Adicione mais cards aqui... -->
             </div>
         </div>
         
         <div id="tab4" class="tab-content">
             <h2>Camada 4: Transporte</h2>
             <div class="pdf-gallery">
-                
                 <div class="pdf-card">
-                <button class="maximize-btn">Maximizar PDF</button>
+                    <button class="maximize-btn">Maximizar PDF</button>
                     <h3>Simulação de Atendimento de Camada 4</h3>
                     <div class="pdf-embed" id="pdf-container7">
                         <object data="src/Simulação de Atendimento de Camada 4 - Cliente Cooperativo.pdf" type="application/pdf" width="100%" height="100%">
-                            <iframe src="src/Simulação de Atendimento de Camada 4 - Cliente Cooperativo.pdf" width="100%" height="100%" sandbox="allow-scripts allow-same-origin"></iframe>
+                            <iframe src="https://docs.google.com/gview?url=your-domain/src/Simulação de Atendimento de Camada 4 - Cliente Cooperativo.pdf&embedded=true" width="100%" height="100%"></iframe>
                             <p class="pdf-fallback">Seu navegador não suporta PDFs. <a href="src/Simulação de Atendimento de Camada 4 - Cliente Cooperativo.pdf">Baixe o PDF aqui</a>.</p>
                         </object>
                     </div>
                 </div>
 
                 <div class="pdf-card">
-                <button class="maximize-btn">Maximizar PDF</button>
+                    <button class="maximize-btn">Maximizar PDF</button>
                     <h3>Simulação de Atendimento de Camada 4</h3>
                     <div class="pdf-embed" id="pdf-container8">
                         <object data="src/Simulação de Atendimento de Camada 4 - Cliente Irritado..pdf" type="application/pdf" width="100%" height="100%">
-                            <iframe src="src/Simulação de Atendimento de Camada 4 - Cliente Irritado..pdf" width="100%" height="100%" sandbox="allow-scripts allow-same-origin"></iframe>
+                            <iframe src="https://docs.google.com/gview?url=your-domain/src/Simulação de Atendimento de Camada 4 - Cliente Irritado..pdf&embedded=true" width="100%" height="100%"></iframe>
                             <p class="pdf-fallback">Seu navegador não suporta PDFs. <a href="src/Simulação de Atendimento de Camada 4 - Cliente Irritado..pdf">Baixe o PDF aqui</a>.</p>
                         </object>
                     </div>
                 </div>
-                <!-- Adicione mais cards aqui... -->
             </div>
         </div>
     </div>
 
-    <!-- JavaScript para Abas e Maximizar -->
     <script>
         // JavaScript para Abas
         const tabs = document.querySelectorAll('.tab-links button');
@@ -376,19 +345,17 @@
             });
         });
 
-        // JavaScript para Maximizar PDFs (corrigido para tela cheia)
-        window.addEventListener('DOMContentLoaded', () => {
+        // JavaScript para Maximizar PDFs
+        document.addEventListener('DOMContentLoaded', () => {
             const maximizeBtns = document.querySelectorAll('.maximize-btn');
             maximizeBtns.forEach(btn => {
                 btn.addEventListener('click', () => {
                     const card = btn.closest('.pdf-card');
                     if (card) {
-                        // Clona o card para tela cheia (evita remover do original)
                         const fullscreenCard = card.cloneNode(true);
                         fullscreenCard.classList.add('pdf-fullscreen');
                         document.body.appendChild(fullscreenCard);
 
-                        // Adiciona botão de fechar no clone
                         const closeBtn = document.createElement('button');
                         closeBtn.classList.add('close-btn');
                         closeBtn.textContent = 'Fechar';
@@ -398,104 +365,36 @@
                         });
                         fullscreenCard.appendChild(closeBtn);
 
-                        // Ajusta o embed no clone
                         const embed = fullscreenCard.querySelector('.pdf-embed');
                         if (embed) {
-                            embed.style.height = 'calc(100vh - 100px)'; // Ajuste para caber título e botões
+                            embed.style.height = 'calc(100vh - 100px)';
                         }
-                    } else {
-                        console.error('Card não encontrado.');
                     }
                 });
             });
-        });
-        
-        PDFJS.getDocument('src/Simulação de Atendimento - cliente cooperativo.pdf').then(pdf => {
-            pdf.getPage(1).then(page => {  // Renderiza página 1 como exemplo
-                const viewport = page.getViewport({ scale: 1.5 });
-                const canvas = document.createElement('canvas');
-                canvas.height = viewport.height;
-                canvas.width = viewport.width;
-                document.getElementById('pdf-container1').appendChild(canvas);
-                page.render({ canvasContext: canvas.getContext('2d'), viewport: viewport });
-            });
-        });
 
-        PDFJS.getDocument('src/Simulação de Atendimento - cliente irritado.pdf').then(pdf => {
-            pdf.getPage(1).then(page => {  
-                const viewport = page.getViewport({ scale: 1.5 });
-                const canvas = document.createElement('canvas');
-                canvas.height = viewport.height;
-                canvas.width = viewport.width;
-                document.getElementById('pdf-container2').appendChild(canvas);
-                page.render({ canvasContext: canvas.getContext('2d'), viewport: viewport });
-            });
-        });
+            // Renderização com PDF.js (apenas preview da primeira página)
+            const renderPdfPreview = (url, containerId) => {
+                pdfjsLib.getDocument(url).promise.then(pdf => {
+                    pdf.getPage(1).then(page => {
+                        const viewport = page.getViewport({ scale: 1.5 });
+                        const canvas = document.createElement('canvas');
+                        canvas.height = viewport.height;
+                        canvas.width = viewport.width;
+                        document.getElementById(containerId).appendChild(canvas);
+                        page.render({ canvasContext: canvas.getContext('2d'), viewport: viewport });
+                    });
+                }).catch(error => console.error('Erro ao renderizar PDF:', error));
+            };
 
-        PDFJS.getDocument('src/Simulação de Atendimento - Camada 2 Cliente Receptivo.pdf').then(pdf => {
-            pdf.getPage(1).then(page => {  
-                const viewport = page.getViewport({ scale: 1.5 });
-                const canvas = document.createElement('canvas');
-                canvas.height = viewport.height;
-                canvas.width = viewport.width;
-                document.getElementById('pdf-container3').appendChild(canvas);
-                page.render({ canvasContext: canvas.getContext('2d'), viewport: viewport });
-            });
-        });
-
-        PDFJS.getDocument('src/Simulação de Atendimento - Camada 2 Cliente Irritado..pdf').then(pdf => {
-            pdf.getPage(1).then(page => {  
-                const viewport = page.getViewport({ scale: 1.5 });
-                const canvas = document.createElement('canvas');
-                canvas.height = viewport.height;
-                canvas.width = viewport.width;
-                document.getElementById('pdf-container4').appendChild(canvas);
-                page.render({ canvasContext: canvas.getContext('2d'), viewport: viewport });
-            });
-        });
-
-        PDFJS.getDocument('src/Simulação de Atendimento Camada 3 - Cliente Cooperativo..pdf').then(pdf => {
-            pdf.getPage(1).then(page => {  
-                const viewport = page.getViewport({ scale: 1.5 });
-                const canvas = document.createElement('canvas');
-                canvas.height = viewport.height;
-                canvas.width = viewport.width;
-                document.getElementById('pdf-container5').appendChild(canvas);
-                page.render({ canvasContext: canvas.getContext('2d'), viewport: viewport });
-            });
-        });
-
-        PDFJS.getDocument('src/Simulação de Atendimento Camada 3 - Cliente Irritado..pdf').then(pdf => {
-            pdf.getPage(1).then(page => {  
-                const viewport = page.getViewport({ scale: 1.5 });
-                const canvas = document.createElement('canvas');
-                canvas.height = viewport.height;
-                canvas.width = viewport.width;
-                document.getElementById('pdf-container6').appendChild(canvas);
-                page.render({ canvasContext: canvas.getContext('2d'), viewport: viewport });
-            });
-        });
-
-        PDFJS.getDocument('src/Simulação de Atendimento de Camada 4 - Cliente Cooperativo.pdf').then(pdf => {
-            pdf.getPage(1).then(page => {  
-                const viewport = page.getViewport({ scale: 1.5 });
-                const canvas = document.createElement('canvas');
-                canvas.height = viewport.height;
-                canvas.width = viewport.width;
-                document.getElementById('pdf-container7').appendChild(canvas);
-                page.render({ canvasContext: canvas.getContext('2d'), viewport: viewport });
-            });
-        });
-
-        PDFJS.getDocument('src/Simulação de Atendimento de Camada 4 - Cliente Irritado..pdf').then(pdf => {
-            pdf.getPage(1).then(page => {  
-                const viewport = page.getViewport({ scale: 1.5 });
-                const canvas = document.createElement('canvas');
-                canvas.height = viewport.height;
-                canvas.width = viewport.width;
-                document.getElementById('pdf-container8').appendChild(canvas);
-                page.render({ canvasContext: canvas.getContext('2d'), viewport: viewport });
-            });
+            renderPdfPreview('src/Simulação de Atendimento - cliente cooperativo.pdf', 'pdf-container1');
+            renderPdfPreview('src/Simulação de Atendimento - cliente irritado.pdf', 'pdf-container2');
+            renderPdfPreview('src/Simulação de Atendimento - Camada 2 Cliente Receptivo.pdf', 'pdf-container3');
+            renderPdfPreview('src/Simulação de Atendimento - Camada 2 Cliente Irritado..pdf', 'pdf-container4');
+            renderPdfPreview('src/Simulação de Atendimento Camada 3 - Cliente Cooperativo..pdf', 'pdf-container5');
+            renderPdfPreview('src/Simulação de Atendimento Camada 3 - Cliente Irritado..pdf', 'pdf-container6');
+            renderPdfPreview('src/Simulação de Atendimento de Camada 4 - Cliente Cooperativo.pdf', 'pdf-container7');
+            renderPdfPreview('src/Simulação de Atendimento de Camada 4 - Cliente Irritado..pdf', 'pdf-container8');
         });
     </script>
 </body>
